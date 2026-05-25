@@ -6,7 +6,7 @@ Sistema de gestión de libros electrónicos desarrollado en ** Golang** como pro
  
 ## Objetivo
  
-Desarrollar un sistema funcional que permita la gestión integral de una biblioteca digital, aplicando los conceptos fundamentales de programación en Go: sintaxis básica, condicionales, estructuras de control iterativo, funciones y manejo de paquetes.
+Desarrollar un sistema funcional que permita la gestión  de una biblioteca digital, aplicando los conceptos fundamentales de programación en Go: sintaxis básica, condicionales, estructuras de control iterativo, funciones y manejo de paquetes.
  
 ## Módulos
  
@@ -15,7 +15,7 @@ Desarrollar un sistema funcional que permita la gestión integral de una bibliot
 Administra el catálogo de libros electrónicos disponibles en la biblioteca.
  
 **Funcionalidades:**
-- Registrar nuevo libro (título, autor, categoría, ISBN, formato)
+- Registrar nuevo libro 
 - Listar todos los libros del catálogo
 - Buscar libros por título, autor o categoría
 - Actualizar información de un libro existente
@@ -38,6 +38,7 @@ Administra los usuarios registrados en el sistema.
 Controla el flujo de préstamos y devoluciones de libros.
  
 **Funcionalidades:**
+- Administrar préstamos
 - Crear un préstamo (asignar libro a usuario)
 - Validar disponibilidad del libro antes del préstamo
 - Controlar límite de préstamos por usuario (máximo 3 activos)
@@ -45,7 +46,7 @@ Controla el flujo de préstamos y devoluciones de libros.
 - Listar préstamos activos
 - Consultar historial de préstamos por usuario
  
-### Módulo 4: Utilidades (`utils/`)
+### Módulo 4: Validaciones (`Utils/`)
  
 Funciones auxiliares compartidas entre los demás módulos.
  
@@ -60,7 +61,6 @@ Funciones auxiliares compartidas entre los demás módulos.
 ```
 biblioteca-digital-go/
 ├── main.go                  # Punto de entrada y menú principal
-├── go.mod                   # Definición del módulo de Go
 ├── README.md                # Este archivo
 ├── .gitignore               # Archivos ignorados por Git
 ├── libros/
@@ -79,9 +79,9 @@ biblioteca-digital-go/
  
 ## Tecnologías Utilizadas
  
-- **Lenguaje:** Go 1.21+
+- **Lenguaje:** Go 
 - **Persistencia:** Archivos JSON
-- **Interfaz:** Consola (CLI)
+- **Interfaz:**  
  
 ## Paquetes Utilizados
  
@@ -122,7 +122,8 @@ go run main.go
 | Funciones | Operaciones CRUD con retorno múltiple |
 | Paquetes | Organización modular del código por dominio |
 
-##Autores
+## Autores
 Estudiantes de la carrera de Ingenieria en Sistemas de Información 
+
 **- Wendy Soto**
 **- Jhoel Amagua**
