@@ -1,10 +1,10 @@
-# Biblioteca Digital - Sistema de Gestión de Libros Electrónicos
+## Sistema de Gestión de Libros Electrónicos :closed_book:
  
-## Descripción
+### Descripción
  
 Sistema de gestión de libros electrónicos desarrollado en ** Golang** como proyecto de la materia de Programación Orientada a Objetos. Permite administrar un catálogo de libros digitales, gestionar usuarios y controlar el préstamo y devolución de libros mediante una aplicación de consola interactiva.
  
-## Objetivo
+### Objetivo
  
 Desarrollar un sistema funcional que permita la gestión  de una biblioteca digital, aplicando los conceptos fundamentales de programación en Go: sintaxis básica, condicionales, estructuras de control iterativo, funciones y manejo de paquetes.
  
@@ -112,15 +112,6 @@ biblioteca-digital-go/
 go run main.go
 ```
  
-## Conceptos de Go Aplicados (Unidad 1)
- 
-| Tema | Aplicación |
-|------|-----------|
-| Sintaxis y tipos de datos | Structs para modelar Libro, Usuario y Prestamo |
-| Condicionales (if/else, switch) | Validaciones de negocio y menú de opciones |
-| Bucles (for, range) | Recorrido de catálogos, búsquedas y listados |
-| Funciones | Operaciones CRUD con retorno múltiple |
-| Paquetes | Organización modular del código por dominio |
 
 ## Autores
 Estudiantes de la carrera de Ingenieria en Sistemas de Información 
