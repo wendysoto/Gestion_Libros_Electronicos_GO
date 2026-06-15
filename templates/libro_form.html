@@ -1,0 +1,49 @@
+{{template "header" .}}
+
+<h2>{{.Titulo}}</h2>
+
+{{if .Error}}
+<p style="color: red;">{{.Error}}</p>
+{{end}}
+
+<form action="/libros/nuevo" method="POST">
+    <div>
+        <label for="titulo">Título del Libro:</label><br>
+        <input type="text" id="titulo" name="titulo" required
+               placeholder="Ingrese el título del libro">
+    </div>
+    <br>
+    <div>
+        <label for="autor">Autor:</label><br>
+        <input type="text" id="autor" name="autor" required
+               placeholder="Ingrese el nombre del autor">
+    </div>
+    <br>
+    <div>
+        <label for="categoria">Categoría:</label><br>
+        <input type="text" id="categoria" name="categoria" required
+               placeholder="Ej: Programación, Literatura, Ficción">
+    </div>
+    <br>
+    <div>
+        <label for="isbn">ISBN:</label><br>
+        <input type="text" id="isbn" name="isbn" required
+               placeholder="Ej: 978-0132350884">
+    </div>
+    <br>
+    <div>
+        <label for="formato">Formato:</label><br>
+        <select id="formato" name="formato" required>
+            <option value="PDF">PDF</option>
+            <option value="EPUB">EPUB</option>
+            <option value="MOBI">MOBI</option>
+        </select>
+    </div>
+    <br>
+    <div>
+        <button type="submit">Registrar Libro</button>
+        <a href="/libros">Cancelar</a>
+    </div>
+</form>
+
+{{template "footer" .}}

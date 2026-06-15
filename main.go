@@ -37,20 +37,13 @@ func main() {
 
 	// ============================================================
 	// PASO 2: Inicializar Repositorios (capa de datos)
-	// Los repositorios implementan las interfaces definidas en el paquete
-	// 'interfaces', demostrando polimorfismo: cualquier implementación
-	// que satisfaga la interfaz puede ser inyectada aquí.
 	// ============================================================
 	libroRepo := repositories.NuevoLibroRepository(database)
-	usuarioRepo := repositories.NuevoUsuarioRepository(database)
 
 	// ============================================================
 	// PASO 3: Inicializar Servicios (lógica de negocio)
-	// Los servicios reciben interfaces de repositorio como dependencias.
-	// Esto demuestra inyección de dependencias y desacoplamiento.
 	// ============================================================
 	libroService := services.NuevoLibroService(libroRepo)
-	usuarioService := services.NuevoUsuarioService(usuarioRepo)
 
 	// ============================================================
 	// PASO 4: Cargar Templates HTML
@@ -61,7 +54,6 @@ func main() {
 	// PASO 5: Inicializar Handlers (controladores HTTP)
 	// ============================================================
 	libroHandler := handlers.NuevoLibroHandler(libroService, tmpl)
-	usuarioHandler := handlers.NuevoUsuarioHandler(usuarioService, tmpl)
 
 	// ============================================================
 	// PASO 6: Configurar Rutas con Gorilla Mux
@@ -79,16 +71,16 @@ func main() {
 		tmpl.ExecuteTemplate(w, "index.html", data)
 	}).Methods("GET")
 
-	// Rutas de Libros - Listar catálogo desde la base de datos
+	// Rutas de Libros
 	router.HandleFunc("/libros", libroHandler.ListarLibros).Methods("GET")
-
-	// Rutas de Usuarios - Listar usuarios desde la base de datos
-	router.HandleFunc("/usuarios", usuarioHandler.ListarUsuarios).Methods("GET")
+	router.HandleFunc("/libros/nuevo", libroHandler.CrearLibroForm).Methods("GET")
+	router.HandleFunc("/libros/nuevo", libroHandler.CrearLibro).Methods("POST")
+	router.HandleFunc("/libros/eliminar/{id:[0-9]+}", libroHandler.EliminarLibro).Methods("POST")
 
 	// ============================================================
 	// PASO 7: Iniciar Servidor HTTP
 	// ============================================================
-	puerto := ":8082"
+	puerto := ":8081"
 	log.Printf("Servidor iniciado en http://localhost%s", puerto)
 	log.Fatal(http.ListenAndServe(puerto, router))
 }
