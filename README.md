@@ -59,22 +59,33 @@ Funciones auxiliares compartidas entre los demás módulos.
 ## Estructura del Proyecto
  
 ```
-biblioteca-digital-go/
-├── main.go                  # Punto de entrada y menú principal
+Gestion_Libros_Electronicos_GO/
 ├── README.md                # Este archivo
 ├── .gitignore               # Archivos ignorados por Git
-├── libros/
-│   └── libros.go           # Lógica del módulo de libros
-├── usuarios/
-│   └── usuarios.go         # Lógica del módulo de usuarios
-├── prestamos/
-│   └── prestamos.go        # Lógica del módulo de préstamos
-├── utils/
-│   └── utils.go            # Funciones auxiliares
-└── datos/
-    ├── libros.json          # Datos persistidos de libros
-    ├── usuarios.json        # Datos persistidos de usuarios
-    └── prestamos.json       # Datos persistidos de préstamos
+├── datos/
+│   └── base_datos.sql           # Lógica del módulo de libros
+├── db/
+│   └── connect.go         # Conexión con la base de datos en Postgresql
+├── handlers/
+│   └── libro_handler.go        # Peticiones http y renderiza vistas en html - encapsulación y manejo de errores de libros
+├── interfaces/
+│   └── repository.go            # Conjunto de métodos
+└── models/
+    ├── errors.go          # Errores personalizados
+    ├── libro.go           # Estructura - Getter y Setter de la lógica de libros
+└── prestamos/
+    ├── prestamos.go          # En proceso de desarrollo
+└── repositories/
+    ├── libro_repository.go          # Lógica de repositorios de libros
+└── services/
+    ├── libro_service.go          # intermediarios entre los handlers http y los repositorios (base de datos), mantiene la logica del negocio
+└── static/
+    ├── style.css          # estilos básicos (colores, magenes, etc.)
+└── templates/
+    ├── base.html          # Encabezado - Menú - Pie de página
+    ├── index.html         # Encabezado - Página de inicio - Pie de página
+    ├── libro_form.html    # Encabezado - Formulario para ingreso de nuevo libro - Pie de página
+    ├── libros.html        # Encabezado - Listado de libros desde base de datos - Pie de página
 ```
  
 ## Tecnologías Utilizadas
