@@ -1,0 +1,46 @@
+{{template "header" .}}
+
+<div class="page-header">
+    <h2>{{.Titulo}}</h2>
+</div>
+
+{{if .Libros}}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Categoría</th>
+            <th>ISBN</th>
+            <th>Formato</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Libros}}
+        <tr>
+            <td>{{.GetID}}</td>
+            <td>{{.GetTitulo}}</td>
+            <td>{{.GetAutor}}</td>
+            <td>{{.GetCategoria}}</td>
+            <td>{{.GetISBN}}</td>
+            <td><span class="badge badge-info">{{.GetFormato}}</span></td>
+            <td>
+                {{if .GetDisponible}}
+                    <span class="badge badge-success">Disponible</span>
+                {{else}}
+                    <span class="badge badge-danger">Prestado</span>
+                {{end}}
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{else}}
+<div class="alert alert-info">
+    <p>No se encontraron libros en el catálogo.</p>
+</div>
+{{end}}
+
+{{template "footer" .}}

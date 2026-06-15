@@ -1,0 +1,40 @@
+{{template "header" .}}
+
+<div class="page-header">
+    <h2>{{.Titulo}}</h2>
+</div>
+
+{{if .Usuarios}}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Tipo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Usuarios}}
+        <tr>
+            <td>{{.GetID}}</td>
+            <td>{{.GetNombre}}</td>
+            <td>{{.GetEmail}}</td>
+            <td>
+                {{if eq (printf "%s" .GetTipo) "admin"}}
+                    <span class="badge badge-warning">Administrador</span>
+                {{else}}
+                    <span class="badge badge-info">Lector</span>
+                {{end}}
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{else}}
+<div class="alert alert-info">
+    <p>No hay usuarios registrados en el sistema.</p>
+</div>
+{{end}}
+
+{{template "footer" .}}

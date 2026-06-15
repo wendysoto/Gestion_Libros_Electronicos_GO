@@ -1,0 +1,32 @@
+{{define "header"}}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Titulo}} - Biblioteca Digital</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h1>📚 Biblioteca Digital</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/libros">Libros</a></li>
+            <li><a href="/usuarios">Usuarios</a></li>
+            <li><a href="/prestamos">Préstamos</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+{{end}}
+
+{{define "footer"}}
+    </main>
+    <footer class="footer">
+        <p>Sistema de Gestión de Libros Electrónicos - POO con Go | 2026</p>
+    </footer>
+</body>
+</html>
+{{end}}

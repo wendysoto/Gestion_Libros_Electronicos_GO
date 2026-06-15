@@ -1,0 +1,22 @@
+# Binarios
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Archivos de prueba
+*.test
+
+# Archivos de salida
+*.out
+
+# Directorios del IDE
+.idea/
+.vscode/
+
+# Variables de entorno (contiene credenciales)
+.env
+
+# Dependencias
+vendor/
