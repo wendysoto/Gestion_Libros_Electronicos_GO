@@ -1,0 +1,15 @@
+/* ============================================================
+   Estilos personalizados adicionales a Bootstrap 5
+   Proyecto POO - Golang
+   ============================================================ */
+
+/* Espaciado mínimo del body para que el footer no se pegue */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}

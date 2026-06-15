@@ -113,6 +113,15 @@ go run main.go
 ```
  
 
+ ----------------------------------
+
+ Semana 2
+
+
+ Uso de Bosstrap a travez del CDN
+ https://getbootstrap.com/
+ 
+
 ## Autores
 Estudiantes de la carrera de Ingenieria en Sistemas de Información 
 

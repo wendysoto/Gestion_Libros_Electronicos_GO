@@ -1,45 +1,48 @@
 {{template "header" .}}
 
-<div class="page-header">
-    <h2>{{.Titulo}}</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-journal-text"></i> {{.Titulo}}</h2>
 </div>
 
 {{if .Libros}}
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>Categoría</th>
-            <th>ISBN</th>
-            <th>Formato</th>
-            <th>Estado</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{range .Libros}}
-        <tr>
-            <td>{{.GetID}}</td>
-            <td>{{.GetTitulo}}</td>
-            <td>{{.GetAutor}}</td>
-            <td>{{.GetCategoria}}</td>
-            <td>{{.GetISBN}}</td>
-            <td><span class="badge badge-info">{{.GetFormato}}</span></td>
-            <td>
-                {{if .GetDisponible}}
-                    <span class="badge badge-success">Disponible</span>
-                {{else}}
-                    <span class="badge badge-danger">Prestado</span>
-                {{end}}
-            </td>
-        </tr>
-        {{end}}
-    </tbody>
-</table>
+<!-- Tabla de Libros con Bootstrap -->
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Categoría</th>
+                <th>ISBN</th>
+                <th>Formato</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Libros}}
+            <tr>
+                <td>{{.GetID}}</td>
+                <td>{{.GetTitulo}}</td>
+                <td>{{.GetAutor}}</td>
+                <td>{{.GetCategoria}}</td>
+                <td><code>{{.GetISBN}}</code></td>
+                <td><span class="badge bg-info">{{.GetFormato}}</span></td>
+                <td>
+                    {{if .GetDisponible}}
+                        <span class="badge bg-success">Disponible</span>
+                    {{else}}
+                        <span class="badge bg-danger">Prestado</span>
+                    {{end}}
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
 {{else}}
-<div class="alert alert-info">
-    <p>No se encontraron libros en el catálogo.</p>
+<div class="alert alert-info" role="alert">
+    <i class="bi bi-info-circle"></i> No se encontraron libros en el catálogo.
 </div>
 {{end}}
 
