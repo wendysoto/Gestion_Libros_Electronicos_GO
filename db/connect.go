@@ -32,19 +32,6 @@ type LibroDB struct {
 // TableName especifica el nombre de la tabla para GORM.
 func (LibroDB) TableName() string { return "libros" }
 
-// UsuarioDB es el modelo de GORM para la tabla 'usuarios'.
-type UsuarioDB struct {
-	ID        uint   `gorm:"primaryKey;column:id"`
-	Nombre    string `gorm:"column:nombre;not null"`
-	Email     string `gorm:"column:email;uniqueIndex;not null"`
-	Tipo      string `gorm:"column:tipo;not null;default:'lector'"`
-	CreatedAt string `gorm:"column:created_at"`
-	UpdatedAt string `gorm:"column:updated_at"`
-}
-
-// TableName especifica el nombre de la tabla para GORM.
-func (UsuarioDB) TableName() string { return "usuarios" }
-
 // Connect establece la conexión con la base de datos PostgreSQL.
 // Carga las credenciales desde el archivo .env y retorna una instancia de GORM.
 // Implementa manejo de errores robusto con mensajes descriptivos.
@@ -76,7 +63,7 @@ func Connect() (*gorm.DB, error) {
 		return nil, fmt.Errorf("error al conectar con la base de datos: %w", err)
 	}
 
-	log.Println("Conexion exitosa a la base de datos PostgreSQL")
+	log.Println("✓ Conexión exitosa a la base de datos PostgreSQL")
 	instancia = db
 	return instancia, nil
 }

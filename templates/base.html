@@ -7,24 +7,22 @@
     <title>{{.Titulo}} - Biblioteca Digital</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
-    <nav class="navbar">
-        <div class="nav-brand">
-            <h1>📚 Biblioteca Digital</h1>
-        </div>
-        <ul class="nav-links">
+<body class="margin-80 ">
+    <nav>
+        <h1>Biblioteca Digital</h1>
+        <ul>
             <li><a href="/">Inicio</a></li>
             <li><a href="/libros">Libros</a></li>
-            <li><a href="/usuarios">Usuarios</a></li>
-            <li><a href="/prestamos">Préstamos</a></li>
+            <li><a href="/libros">Usuarios</a></li>
+            <li><a href="/Prestamos">Préstamos</a></li>
         </ul>
     </nav>
-    <main class="container">
+    <main>
 {{end}}
 
 {{define "footer"}}
     </main>
-    <footer class="footer">
+    <footer>
         <p>Sistema de Gestión de Libros Electrónicos - POO con Go | 2026</p>
     </footer>
 </body>

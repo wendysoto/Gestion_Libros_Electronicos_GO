@@ -28,12 +28,6 @@ var (
 
 	// ErrConexionDB se produce cuando falla la conexión a la base de datos.
 	ErrConexionDB = errors.New("error de conexión a base de datos")
-
-	// ErrLimitePrestamos se produce cuando un usuario excede el máximo de préstamos activos.
-	ErrLimitePrestamos = errors.New("límite de préstamos alcanzado")
-
-	// ErrLibroNoDisponible se produce cuando se intenta prestar un libro que no está disponible.
-	ErrLibroNoDisponible = errors.New("libro no disponible para préstamo")
 )
 
 // ============================================================
@@ -46,7 +40,7 @@ var (
 // Implementa la interfaz error de Go.
 type AppError struct {
 	Op       string // Operación que falló (ej: "LibroRepository.Crear")
-	Recurso  string // Recurso afectado (ej: "libro", "usuario")
+	Recurso  string // Recurso afectado (ej: "libro")
 	Err      error  // Error original envuelto
 }
 

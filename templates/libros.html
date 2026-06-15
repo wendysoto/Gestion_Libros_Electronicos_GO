@@ -1,11 +1,11 @@
 {{template "header" .}}
 
-<div class="page-header">
-    <h2>{{.Titulo}}</h2>
-</div>
+<h2>{{.Titulo}}</h2>
+<a href="/libros/nuevo">+ Nuevo Libro</a>
+<br><br>
 
 {{if .Libros}}
-<table class="table">
+<table border="1">
     <thead>
         <tr>
             <th>ID</th>
@@ -15,6 +15,7 @@
             <th>ISBN</th>
             <th>Formato</th>
             <th>Estado</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -25,22 +26,26 @@
             <td>{{.GetAutor}}</td>
             <td>{{.GetCategoria}}</td>
             <td>{{.GetISBN}}</td>
-            <td><span class="badge badge-info">{{.GetFormato}}</span></td>
+            <td>{{.GetFormato}}</td>
             <td>
                 {{if .GetDisponible}}
-                    <span class="badge badge-success">Disponible</span>
+                    Disponible
                 {{else}}
-                    <span class="badge badge-danger">Prestado</span>
+                    Prestado
                 {{end}}
+            </td>
+            <td>
+                <form action="/libros/eliminar/{{.GetID}}" method="POST" style="display:inline;"
+                      onsubmit="return confirm('¿Está seguro de eliminar este libro?')">
+                    <button type="submit">Eliminar</button>
+                </form>
             </td>
         </tr>
         {{end}}
     </tbody>
 </table>
 {{else}}
-<div class="alert alert-info">
-    <p>No se encontraron libros en el catálogo.</p>
-</div>
+<p>No se encontraron libros en el catálogo.</p>
 {{end}}
 
 {{template "footer" .}}

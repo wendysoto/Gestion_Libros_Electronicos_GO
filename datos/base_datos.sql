@@ -97,4 +97,7 @@ INSERT INTO prestamos (libro_id, usuario_id, fecha_prestamo, fecha_devolucion, e
 (8, 2, '2026-05-15', NULL, 'activo'),
 (1, 3, '2026-05-01', '2026-05-12', 'devuelto'),
 (5, 4, '2026-05-20', NULL, 'activo');
- 
+
+
+
+ select * from libros;

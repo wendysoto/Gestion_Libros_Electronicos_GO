@@ -16,20 +16,19 @@ import "gestion_libros/models"
 
 // ============================================================
 // INTERFAZ: LibroRepository
-// Define las operaciones para la entidad Libro.
+// Define las operaciones CRUD para la entidad Libro.
 // Cualquier struct que implemente estos métodos puede actuar
 // como repositorio de libros (polimorfismo).
 // ============================================================
 type LibroRepository interface {
+	Crear(libro *models.Libro) error
+	ObtenerPorID(id uint) (*models.Libro, error)
 	ObtenerTodos() ([]*models.Libro, error)
-}
-
-// ============================================================
-// INTERFAZ: UsuarioRepository
-// Define las operaciones para la entidad Usuario.
-// ============================================================
-type UsuarioRepository interface {
-	ObtenerTodos() ([]*models.Usuario, error)
+	Actualizar(libro *models.Libro) error
+	Eliminar(id uint) error
+	BuscarPorTitulo(titulo string) ([]*models.Libro, error)
+	BuscarPorAutor(autor string) ([]*models.Libro, error)
+	BuscarPorCategoria(categoria string) ([]*models.Libro, error)
 }
 
 // ============================================================
@@ -44,7 +43,7 @@ type Buscable interface {
 // ============================================================
 // INTERFAZ: Exportable
 // Demuestra polimorfismo: permite que diferentes entidades
-// (libros, usuarios) se exporten en distintos formatos.
+// se exporten en distintos formatos.
 // ============================================================
 type Exportable interface {
 	ExportarJSON() ([]byte, error)
