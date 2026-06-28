@@ -1,15 +1,5 @@
 // Sistema de Gestión de Libros Electrónicos
 // Proyecto de Programación Orientada a Objetos - Golang
-//
-// Este archivo es el punto de entrada de la aplicación.
-// Configura la conexión a la base de datos, inicializa los servicios
-// (inyectando dependencias mediante interfaces) y levanta el servidor HTTP.
-//
-// Conceptos POO demostrados:
-// - Encapsulación: campos privados con getters/setters en los modelos
-// - Interfaces: contratos para repositorios y servicios
-// - Polimorfismo: múltiples implementaciones de las mismas interfaces
-// - Manejo de errores: errores personalizados con wrapping
 package main
 
 import (
@@ -26,41 +16,38 @@ import (
 )
 
 func main() {
-	// ============================================================
-	// PASO 1: Conexión a la Base de Datos PostgreSQL
-	// ============================================================
+	// Conexión a la Base de Datos PostgreSQL
 	database, err := db.Connect()
 	if err != nil {
 		log.Fatal("Error fatal al conectar con la base de datos:", err)
 	}
 	log.Println("Base de datos conectada exitosamente")
 
-	// ============================================================
-	// PASO 2: Inicializar Repositorios (capa de datos)
-	// ============================================================
+	// Inicializar Repositorios
+	categoriaRepo := repositories.NuevoCategoriaRepository(database)
 	libroRepo := repositories.NuevoLibroRepository(database)
+	usuarioRepo := repositories.NuevoUsuarioRepository(database)
+	prestamoRepo := repositories.NuevoPrestamoRepository(database)
 
-	// ============================================================
-	// PASO 3: Inicializar Servicios (lógica de negocio)
-	// ============================================================
+	// Inicializar Servicios
+	categoriaService := services.NuevoCategoriaService(categoriaRepo)
 	libroService := services.NuevoLibroService(libroRepo)
+	usuarioService := services.NuevoUsuarioService(usuarioRepo, prestamoRepo)
+	prestamoService := services.NuevoPrestamoService(prestamoRepo, libroRepo, usuarioRepo)
 
-	// ============================================================
-	// PASO 4: Cargar Templates HTML
-	// ============================================================
+	// Cargar Templates HTML
 	tmpl := template.Must(template.ParseGlob("templates/*.html"))
 
-	// ============================================================
-	// PASO 5: Inicializar Handlers (controladores HTTP)
-	// ============================================================
-	libroHandler := handlers.NuevoLibroHandler(libroService, tmpl)
+	// Inicializar Handlers
+	libroHandler := handlers.NuevoLibroHandler(libroService, categoriaService, tmpl)
+	usuarioHandler := handlers.NuevoUsuarioHandler(usuarioService, tmpl)
+	prestamoHandler := handlers.NuevoPrestamoHandler(prestamoService, libroService, usuarioService, categoriaService, tmpl)
+	apiHandler := handlers.NuevoAPIHandler(libroService, categoriaService)
 
-	// ============================================================
-	// PASO 6: Configurar Rutas con Gorilla Mux
-	// ============================================================
+	// Configurar Rutas
 	router := mux.NewRouter()
 
-	// Archivos estáticos (CSS, imágenes)
+	// Archivos estáticos
 	router.PathPrefix("/static/").Handler(
 		http.StripPrefix("/static/", http.FileServer(http.Dir("static"))),
 	)
@@ -73,13 +60,32 @@ func main() {
 
 	// Rutas de Libros
 	router.HandleFunc("/libros", libroHandler.ListarLibros).Methods("GET")
+	router.HandleFunc("/libros/buscar", libroHandler.BuscarLibrosPorCategoria).Methods("GET")
 	router.HandleFunc("/libros/nuevo", libroHandler.CrearLibroForm).Methods("GET")
 	router.HandleFunc("/libros/nuevo", libroHandler.CrearLibro).Methods("POST")
+	router.HandleFunc("/libros/editar/{id:[0-9]+}", libroHandler.EditarLibroForm).Methods("GET")
+	router.HandleFunc("/libros/editar/{id:[0-9]+}", libroHandler.EditarLibro).Methods("POST")
 	router.HandleFunc("/libros/eliminar/{id:[0-9]+}", libroHandler.EliminarLibro).Methods("POST")
 
-	// ============================================================
-	// PASO 7: Iniciar Servidor HTTP
-	// ============================================================
+	// Rutas de Usuarios
+	router.HandleFunc("/usuarios", usuarioHandler.ListarUsuarios).Methods("GET")
+	router.HandleFunc("/usuarios/nuevo", usuarioHandler.CrearUsuarioForm).Methods("GET")
+	router.HandleFunc("/usuarios/nuevo", usuarioHandler.CrearUsuario).Methods("POST")
+	router.HandleFunc("/usuarios/editar/{id:[0-9]+}", usuarioHandler.EditarUsuarioForm).Methods("GET")
+	router.HandleFunc("/usuarios/editar/{id:[0-9]+}", usuarioHandler.EditarUsuario).Methods("POST")
+	router.HandleFunc("/usuarios/eliminar/{id:[0-9]+}", usuarioHandler.EliminarUsuario).Methods("POST")
+
+	// Rutas de Préstamos
+	router.HandleFunc("/prestamos", prestamoHandler.ListarPrestamos).Methods("GET")
+	router.HandleFunc("/prestamos/nuevo", prestamoHandler.CrearPrestamoForm).Methods("GET")
+	router.HandleFunc("/prestamos/nuevo", prestamoHandler.CrearPrestamo).Methods("POST")
+	router.HandleFunc("/prestamos/devolver/{id:[0-9]+}", prestamoHandler.DevolverPrestamo).Methods("POST")
+	router.HandleFunc("/prestamos/usuario/{id:[0-9]+}", prestamoHandler.HistorialPorUsuario).Methods("GET")
+
+	// API REST (JSON)
+	router.HandleFunc("/api/libros", apiHandler.ListarLibrosPorCategoria).Methods("GET")
+
+	// Iniciar Servidor
 	puerto := ":8081"
 	log.Printf("Servidor iniciado en http://localhost%s", puerto)
 	log.Fatal(http.ListenAndServe(puerto, router))

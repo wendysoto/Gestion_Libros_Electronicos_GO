@@ -2,48 +2,40 @@
 
 <h2>{{.Titulo}}</h2>
 
-{{if .Error}}
-<p style="color: red;">{{.Error}}</p>
-{{end}}
+{{if .Error}}<p style="color:red;">{{.Error}}</p>{{end}}
 
-<form action="/libros/nuevo" method="POST">
-    <div>
-        <label for="titulo">Título del Libro:</label><br>
-        <input type="text" id="titulo" name="titulo" required
-               placeholder="Ingrese el título del libro">
+<form action="/libros/nuevo" method="POST" style="max-width:500px;">
+    <div class="mb-2">
+        <label class="form-label">Título</label>
+        <input type="text" class="form-control form-control-sm" name="titulo" required>
     </div>
-    <br>
-    <div>
-        <label for="autor">Autor:</label><br>
-        <input type="text" id="autor" name="autor" required
-               placeholder="Ingrese el nombre del autor">
+    <div class="mb-2">
+        <label class="form-label">Autor</label>
+        <input type="text" class="form-control form-control-sm" name="autor" required>
     </div>
-    <br>
-    <div>
-        <label for="categoria">Categoría:</label><br>
-        <input type="text" id="categoria" name="categoria" required
-               placeholder="Ej: Programación, Literatura, Ficción">
+    <div class="mb-2">
+        <label class="form-label">Categoría</label>
+        <select class="form-select form-select-sm" name="categoria_id" required>
+            <option value="">-- Seleccione --</option>
+            {{range .Categorias}}
+            <option value="{{.GetID}}">{{.GetNombre}}</option>
+            {{end}}
+        </select>
     </div>
-    <br>
-    <div>
-        <label for="isbn">ISBN:</label><br>
-        <input type="text" id="isbn" name="isbn" required
-               placeholder="Ej: 978-0132350884">
+    <div class="mb-2">
+        <label class="form-label">ISBN</label>
+        <input type="text" class="form-control form-control-sm" name="isbn" required>
     </div>
-    <br>
-    <div>
-        <label for="formato">Formato:</label><br>
-        <select id="formato" name="formato" required>
+    <div class="mb-2">
+        <label class="form-label">Formato</label>
+        <select class="form-select form-select-sm" name="formato" required>
             <option value="PDF">PDF</option>
             <option value="EPUB">EPUB</option>
             <option value="MOBI">MOBI</option>
         </select>
     </div>
-    <br>
-    <div>
-        <button type="submit">Registrar Libro</button>
-        <a href="/libros">Cancelar</a>
-    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+    <a href="/libros" class="btn btn-secondary btn-sm">Cancelar</a>
 </form>
 
 {{template "footer" .}}
