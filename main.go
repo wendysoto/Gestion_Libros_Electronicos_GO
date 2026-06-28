@@ -84,7 +84,7 @@ func main() {
 
 	// API REST (JSON)
 	router.HandleFunc("/api/libros", apiHandler.ListarLibrosPorCategoria).Methods("GET")
-	router.HandleFunc("/api/prestamos/por-usuario", apiHandler.ListarPrestamosPorUsuario).Methods("POST")
+	router.HandleFunc("/api/prestamos/usuario", apiHandler.ListarPrestamosPorUsuario).Methods("POST")
 
 	// Iniciar Servidor
 	puerto := ":8081"

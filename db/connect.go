@@ -100,7 +100,7 @@ func Connect() (*gorm.DB, error) {
 		os.Getenv("DB_PORT"),
 	)
 
-	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{PrepareStmt: false})
 	if err != nil {
 		return nil, fmt.Errorf("error al conectar con la base de datos: %w", err)
 	}
