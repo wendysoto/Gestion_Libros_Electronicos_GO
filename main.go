@@ -42,7 +42,7 @@ func main() {
 	libroHandler := handlers.NuevoLibroHandler(libroService, categoriaService, tmpl)
 	usuarioHandler := handlers.NuevoUsuarioHandler(usuarioService, tmpl)
 	prestamoHandler := handlers.NuevoPrestamoHandler(prestamoService, libroService, usuarioService, categoriaService, tmpl)
-	apiHandler := handlers.NuevoAPIHandler(libroService, categoriaService)
+	apiHandler := handlers.NuevoAPIHandler(libroService, categoriaService, usuarioService, prestamoService)
 
 	// Configurar Rutas
 	router := mux.NewRouter()
@@ -84,6 +84,7 @@ func main() {
 
 	// API REST (JSON)
 	router.HandleFunc("/api/libros", apiHandler.ListarLibrosPorCategoria).Methods("GET")
+	router.HandleFunc("/api/prestamos/por-usuario", apiHandler.ListarPrestamosPorUsuario).Methods("POST")
 
 	// Iniciar Servidor
 	puerto := ":8081"

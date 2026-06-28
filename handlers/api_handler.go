@@ -7,7 +7,9 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
+	"gestion_libros/models"
 	"gestion_libros/services"
 )
 
@@ -15,13 +17,22 @@ import (
 type APIHandler struct {
 	libroService     *services.LibroService
 	categoriaService *services.CategoriaService
+	usuarioService   *services.UsuarioService
+	prestamoService  *services.PrestamoService
 }
 
 // NuevoAPIHandler crea una instancia del handler de API.
-func NuevoAPIHandler(libroService *services.LibroService, categoriaService *services.CategoriaService) *APIHandler {
+func NuevoAPIHandler(
+	libroService *services.LibroService,
+	categoriaService *services.CategoriaService,
+	usuarioService *services.UsuarioService,
+	prestamoService *services.PrestamoService,
+) *APIHandler {
 	return &APIHandler{
 		libroService:     libroService,
 		categoriaService: categoriaService,
+		usuarioService:   usuarioService,
+		prestamoService:  prestamoService,
 	}
 }
 
@@ -31,6 +42,19 @@ type LibroJSON struct {
 	Autor      string `json:"autor"`
 	Categoria  string `json:"categoria"`
 	Disponible string `json:"disponible"`
+}
+
+type PrestamoPorUsuarioRequest struct {
+	NombreUsuario string `json:"nombre_usuario"`
+}
+
+type PrestamoJSON struct {
+	ID              uint   `json:"id"`
+	Libro           string `json:"libro"`
+	Usuario         string `json:"usuario"`
+	FechaPrestamo   string `json:"fecha_prestamo"`
+	FechaDevolucion string `json:"fecha_devolucion"`
+	Estado          string `json:"estado"`
 }
 
 // ListarLibrosPorCategoria retorna los libros filtrados por categoría en formato JSON.
@@ -108,6 +132,72 @@ func (h *APIHandler) ListarLibrosPorCategoria(w http.ResponseWriter, r *http.Req
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	if err := json.NewEncoder(w).Encode(librosJSON); err != nil {
+		log.Printf("Error al codificar JSON: %v", err)
+		http.Error(w, `{"error":"Error al generar respuesta"}`, http.StatusInternalServerError)
+	}
+}
+
+// ListarPrestamosPorUsuario devuelve los préstamos de un usuario recibido en JSON.
+// Endpoint: POST /api/prestamos/por-usuario
+// Body: {"nombre_usuario":"Wendy Soto"}
+func (h *APIHandler) ListarPrestamosPorUsuario(w http.ResponseWriter, r *http.Request) {
+	var req PrestamoPorUsuarioRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, `{"error":"JSON inválido"}`, http.StatusBadRequest)
+		return
+	}
+
+	nombre := strings.TrimSpace(req.NombreUsuario)
+	if nombre == "" {
+		http.Error(w, `{"error":"nombre_usuario es obligatorio"}`, http.StatusBadRequest)
+		return
+	}
+
+	usuarios, err := h.usuarioService.ListarUsuarios()
+	if err != nil {
+		log.Printf("Error al listar usuarios: %v", err)
+		http.Error(w, `{"error":"Error al obtener usuarios"}`, http.StatusInternalServerError)
+		return
+	}
+
+	var usuarioEncontrado *models.Usuario
+	for _, usr := range usuarios {
+		if strings.EqualFold(strings.TrimSpace(usr.GetNombre()), nombre) {
+			usuarioEncontrado = usr
+			break
+		}
+	}
+	if usuarioEncontrado == nil {
+		http.Error(w, `{"error":"usuario no encontrado"}`, http.StatusNotFound)
+		return
+	}
+
+	prestamos, err := h.prestamoService.ObtenerPorUsuario(usuarioEncontrado.GetID())
+	if err != nil {
+		log.Printf("Error al obtener préstamos del usuario: %v", err)
+		http.Error(w, `{"error":"Error al obtener préstamos"}`, http.StatusInternalServerError)
+		return
+	}
+
+	var prestamosJSON []PrestamoJSON
+	for _, p := range prestamos {
+		libroTitulo := "Desconocido"
+		if libro, err := h.libroService.ObtenerLibro(p.GetLibroID()); err == nil {
+			libroTitulo = libro.GetTitulo()
+		}
+
+		prestamosJSON = append(prestamosJSON, PrestamoJSON{
+			ID:              p.GetID(),
+			Libro:           libroTitulo,
+			Usuario:         usuarioEncontrado.GetNombre(),
+			FechaPrestamo:   p.GetFechaPrestamo().Format("2006-01-02"),
+			FechaDevolucion: p.FechaDevolucionStr(),
+			Estado:          string(p.GetEstado()),
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	if err := json.NewEncoder(w).Encode(prestamosJSON); err != nil {
 		log.Printf("Error al codificar JSON: %v", err)
 		http.Error(w, `{"error":"Error al generar respuesta"}`, http.StatusInternalServerError)
 	}
