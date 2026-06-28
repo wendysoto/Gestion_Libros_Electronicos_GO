@@ -1,5 +1,6 @@
-// Package models define las estructuras de datos del sistema.
-// Implementa encapsulación mediante campos no exportados y métodos getter/setter.
+// Package models - Modelo Libro
+// Demuestra ENCAPSULACION: campos no exportados (privados) con acceso
+// controlado mediante métodos getter y setter que validan los datos.
 package models
 
 import (
@@ -21,28 +22,28 @@ const (
 // Los campos están encapsulados (no exportados) para controlar el acceso
 // y validar datos mediante métodos setter.
 type Libro struct {
-	id         uint
-	titulo     string
-	autor      string
-	categoria  string
-	isbn       string
-	formato    FormatoLibro
-	disponible bool
-	createdAt  time.Time
-	updatedAt  time.Time
+	id          uint
+	titulo      string
+	autor       string
+	categoriaID uint
+	isbn        string
+	formato     FormatoLibro
+	disponible  bool
+	createdAt   time.Time
+	updatedAt   time.Time
 }
 
 // --- Métodos Getter (acceso controlado a campos encapsulados) ---
 
-func (l *Libro) GetID() uint            { return l.id }
-func (l *Libro) GetTitulo() string       { return l.titulo }
-func (l *Libro) GetAutor() string        { return l.autor }
-func (l *Libro) GetCategoria() string    { return l.categoria }
-func (l *Libro) GetISBN() string         { return l.isbn }
+func (l *Libro) GetID() uint              { return l.id }
+func (l *Libro) GetTitulo() string        { return l.titulo }
+func (l *Libro) GetAutor() string         { return l.autor }
+func (l *Libro) GetCategoriaID() uint     { return l.categoriaID }
+func (l *Libro) GetISBN() string          { return l.isbn }
 func (l *Libro) GetFormato() FormatoLibro { return l.formato }
-func (l *Libro) GetDisponible() bool     { return l.disponible }
-func (l *Libro) GetCreatedAt() time.Time { return l.createdAt }
-func (l *Libro) GetUpdatedAt() time.Time { return l.updatedAt }
+func (l *Libro) GetDisponible() bool      { return l.disponible }
+func (l *Libro) GetCreatedAt() time.Time  { return l.createdAt }
+func (l *Libro) GetUpdatedAt() time.Time  { return l.updatedAt }
 
 // --- Métodos Setter (validan datos antes de asignarlos) ---
 
@@ -76,20 +77,18 @@ func (l *Libro) SetAutor(autor string) error {
 	return nil
 }
 
-// SetCategoria establece la categoría del libro.
-// Retorna error si la categoría está vacía.
-func (l *Libro) SetCategoria(categoria string) error {
-	categoria = strings.TrimSpace(categoria)
-	if categoria == "" {
-		return fmt.Errorf("%w: la categoría no puede estar vacía", ErrValidacion)
+// SetCategoriaID establece el ID de categoría del libro.
+func (l *Libro) SetCategoriaID(id uint) error {
+	if id == 0 {
+		return fmt.Errorf("%w: la categoría es obligatoria", ErrValidacion)
 	}
-	l.categoria = categoria
+	l.categoriaID = id
 	l.updatedAt = time.Now()
 	return nil
 }
 
 // SetISBN establece el ISBN del libro.
-// Retorna error si el ISBN está vacío o no tiene formato válido.
+// Retorna error si el ISBN está vacío.
 func (l *Libro) SetISBN(isbn string) error {
 	isbn = strings.TrimSpace(isbn)
 	if isbn == "" {
@@ -119,24 +118,18 @@ func (l *Libro) SetDisponible(disponible bool) {
 	l.updatedAt = time.Now()
 }
 
-// SetID establece el ID del libro (usado internamente por el repositorio).
-func (l *Libro) SetID(id uint) {
-	l.id = id
-}
+// SetID establece el ID del libro (uso interno por el repositorio).
+func (l *Libro) SetID(id uint) { l.id = id }
 
 // SetCreatedAt establece la fecha de creación (uso interno).
-func (l *Libro) SetCreatedAt(t time.Time) {
-	l.createdAt = t
-}
+func (l *Libro) SetCreatedAt(t time.Time) { l.createdAt = t }
 
 // SetUpdatedAt establece la fecha de actualización (uso interno).
-func (l *Libro) SetUpdatedAt(t time.Time) {
-	l.updatedAt = t
-}
+func (l *Libro) SetUpdatedAt(t time.Time) { l.updatedAt = t }
 
 // NuevoLibro es un constructor que crea un libro con validación completa.
 // Aplica encapsulación al obligar el uso de setters para la inicialización.
-func NuevoLibro(titulo, autor, categoria, isbn string, formato FormatoLibro) (*Libro, error) {
+func NuevoLibro(titulo, autor string, categoriaID uint, isbn string, formato FormatoLibro) (*Libro, error) {
 	libro := &Libro{
 		disponible: true,
 		createdAt:  time.Now(),
@@ -149,7 +142,7 @@ func NuevoLibro(titulo, autor, categoria, isbn string, formato FormatoLibro) (*L
 	if err := libro.SetAutor(autor); err != nil {
 		return nil, err
 	}
-	if err := libro.SetCategoria(categoria); err != nil {
+	if err := libro.SetCategoriaID(categoriaID); err != nil {
 		return nil, err
 	}
 	if err := libro.SetISBN(isbn); err != nil {

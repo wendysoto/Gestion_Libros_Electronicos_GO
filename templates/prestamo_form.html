@@ -1,0 +1,31 @@
+{{template "header" .}}
+
+<h2>{{.Titulo}}</h2>
+<p>Máximo 3 préstamos activos por usuario.</p>
+
+{{if .Error}}<p style="color:red;">{{.Error}}</p>{{end}}
+
+<form action="/prestamos/nuevo" method="POST" style="max-width:500px;">
+    <div class="mb-2">
+        <label class="form-label">Libro</label>
+        <select class="form-select form-select-sm" name="libro_id" required>
+            <option value="">-- Seleccione un libro --</option>
+            {{range .Libros}}
+            <option value="{{.ID}}">{{.Titulo}} ({{.Categoria}})</option>
+            {{end}}
+        </select>
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Usuario</label>
+        <select class="form-select form-select-sm" name="usuario_id" required>
+            <option value="">-- Seleccione un usuario --</option>
+            {{range .Usuarios}}
+            <option value="{{.GetID}}">{{.GetNombre}} ({{.GetEmail}}) - Préstamos: {{.GetPrestados}}/3</option>
+            {{end}}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-warning btn-sm">Registrar Préstamo</button>
+    <a href="/prestamos" class="btn btn-secondary btn-sm">Cancelar</a>
+</form>
+
+{{template "footer" .}}

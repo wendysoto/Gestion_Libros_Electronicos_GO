@@ -1,15 +1,45 @@
 {{template "header" .}}
 
-<div>
+<div class="text-center my-5">
     <h2>Bienvenido al Sistema de Gestión de Libros Electrónicos</h2>
-    <p>Administra el catálogo de libros digitales.</p>
+    <p class="lead text-muted">Administra el catálogo de libros digitales, usuarios y préstamos.</p>
 </div>
 
-<div>
-    <div>
-        <h3>Libros</h3>
-        <p>Gestiona el catálogo de libros electrónicos disponibles.</p>
-        <a href="/libros">Ver Catálogo</a>
+<div class="row g-4">
+    <!-- Tarjeta Libros -->
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="bi bi-journal-richtext display-3 text-primary"></i>
+                <h4 class="card-title mt-3">Libros</h4>
+                <p class="card-text">Gestiona el catálogo de libros electrónicos disponibles en la biblioteca.</p>
+                <a href="/libros" class="btn btn-primary">Ver Catálogo</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Usuarios -->
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="bi bi-people display-3 text-success"></i>
+                <h4 class="card-title mt-3">Usuarios</h4>
+                <p class="card-text">Administra los usuarios registrados en el sistema de la biblioteca.</p>
+                <a href="/usuarios" class="btn btn-success">Ver Usuarios</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Préstamos -->
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="bi bi-arrow-left-right display-3 text-warning"></i>
+                <h4 class="card-title mt-3">Préstamos</h4>
+                <p class="card-text">Controla el préstamo y devolución de libros electrónicos.</p>
+                <a href="/prestamos" class="btn btn-warning">Ver Préstamos</a>
+            </div>
+        </div>
     </div>
 </div>
 

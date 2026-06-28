@@ -1,0 +1,40 @@
+{{template "header" .}}
+
+<h2>{{.Titulo}}</h2>
+
+{{if .Error}}<p style="color:red;">{{.Error}}</p>{{end}}
+
+<form action="/libros/editar/{{.Libro.GetID}}" method="POST" style="max-width:500px;">
+    <div class="mb-2">
+        <label class="form-label">Título</label>
+        <input type="text" class="form-control form-control-sm" name="titulo" value="{{.Libro.GetTitulo}}" required>
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Autor</label>
+        <input type="text" class="form-control form-control-sm" name="autor" value="{{.Libro.GetAutor}}" required>
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Categoría</label>
+        <select class="form-select form-select-sm" name="categoria_id" required>
+            {{range .Categorias}}
+            <option value="{{.GetID}}" {{if eq .GetID $.Libro.GetCategoriaID}}selected{{end}}>{{.GetNombre}}</option>
+            {{end}}
+        </select>
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Link del libro digital</label>
+        <input type="url" class="form-control form-control-sm" name="isbn" value="{{.Libro.GetISBN}}" placeholder="https://..." required>
+    </div>
+    <div class="mb-2">
+        <label class="form-label">Formato</label>
+        <select class="form-select form-select-sm" name="formato" required>
+            <option value="PDF" {{if eq (printf "%s" .Libro.GetFormato) "PDF"}}selected{{end}}>PDF</option>
+            <option value="EPUB" {{if eq (printf "%s" .Libro.GetFormato) "EPUB"}}selected{{end}}>EPUB</option>
+            <option value="MOBI" {{if eq (printf "%s" .Libro.GetFormato) "MOBI"}}selected{{end}}>MOBI</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-warning btn-sm">Actualizar</button>
+    <a href="/libros" class="btn btn-secondary btn-sm">Cancelar</a>
+</form>
+
+{{template "footer" .}}

@@ -18,7 +18,7 @@ CREATE TABLE libros (
     titulo      VARCHAR(255) NOT NULL,
     autor       VARCHAR(255) NOT NULL,
     categoria   VARCHAR(100) NOT NULL,
-    isbn        VARCHAR(20)  UNIQUE NOT NULL,
+    isbn        VARCHAR(500)  UNIQUE NOT NULL,
     formato     formato_libro NOT NULL DEFAULT 'PDF',
     disponible  BOOLEAN NOT NULL DEFAULT TRUE,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

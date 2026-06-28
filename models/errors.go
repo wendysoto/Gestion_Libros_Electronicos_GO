@@ -39,9 +39,9 @@ var (
 // como el código de operación y el recurso afectado.
 // Implementa la interfaz error de Go.
 type AppError struct {
-	Op       string // Operación que falló (ej: "LibroRepository.Crear")
-	Recurso  string // Recurso afectado (ej: "libro")
-	Err      error  // Error original envuelto
+	Op      string // Operación que falló (ej: "LibroRepository.Crear")
+	Recurso string // Recurso afectado (ej: "libro")
+	Err     error  // Error original envuelto
 }
 
 // Error implementa la interfaz error.

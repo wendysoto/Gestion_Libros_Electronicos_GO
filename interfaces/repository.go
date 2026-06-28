@@ -15,6 +15,18 @@ package interfaces
 import "gestion_libros/models"
 
 // ============================================================
+// INTERFAZ: CategoriaRepository
+// Define las operaciones CRUD para la entidad Categoria.
+// ============================================================
+type CategoriaRepository interface {
+	Crear(categoria *models.Categoria) error
+	ObtenerPorID(id uint) (*models.Categoria, error)
+	ObtenerTodas() ([]*models.Categoria, error)
+	Actualizar(categoria *models.Categoria) error
+	Eliminar(id uint) error
+}
+
+// ============================================================
 // INTERFAZ: LibroRepository
 // Define las operaciones CRUD para la entidad Libro.
 // Cualquier struct que implemente estos métodos puede actuar
@@ -26,26 +38,41 @@ type LibroRepository interface {
 	ObtenerTodos() ([]*models.Libro, error)
 	Actualizar(libro *models.Libro) error
 	Eliminar(id uint) error
-	BuscarPorTitulo(titulo string) ([]*models.Libro, error)
-	BuscarPorAutor(autor string) ([]*models.Libro, error)
-	BuscarPorCategoria(categoria string) ([]*models.Libro, error)
+	BuscarPorCategoria(categoriaID uint) ([]*models.Libro, error)
 }
 
 // ============================================================
-// INTERFAZ: Buscable
+// INTERFAZ: UsuarioRepository
+// Define las operaciones CRUD para la entidad Usuario.
+// ============================================================
+type UsuarioRepository interface {
+	Crear(usuario *models.Usuario) error
+	ObtenerPorID(id uint) (*models.Usuario, error)
+	ObtenerTodos() ([]*models.Usuario, error)
+	Actualizar(usuario *models.Usuario) error
+	Eliminar(id uint) error
+}
+
+// ============================================================
+// INTERFAZ: PrestamoRepository
+// Define las operaciones para gestionar préstamos de libros.
+// ============================================================
+type PrestamoRepository interface {
+	Crear(prestamo *models.Prestamo) error
+	ObtenerPorID(id uint) (*models.Prestamo, error)
+	ObtenerTodos() ([]*models.Prestamo, error)
+	Actualizar(prestamo *models.Prestamo) error
+	ObtenerActivosPorUsuario(usuarioID uint) ([]*models.Prestamo, error)
+	ObtenerPorUsuario(usuarioID uint) ([]*models.Prestamo, error)
+}
+
+// ============================================================
+// INTERFAZ: Entidad
 // Interfaz genérica que demuestra polimorfismo: cualquier entidad
-// que pueda ser buscada por un término implementa esta interfaz.
+// del sistema que tenga un ID y representación en texto la cumple.
+// Tanto Libro, Usuario, Categoria y Prestamo satisfacen esta interfaz.
 // ============================================================
-type Buscable interface {
-	Buscar(termino string) ([]interface{}, error)
-}
-
-// ============================================================
-// INTERFAZ: Exportable
-// Demuestra polimorfismo: permite que diferentes entidades
-// se exporten en distintos formatos.
-// ============================================================
-type Exportable interface {
-	ExportarJSON() ([]byte, error)
-	ExportarTexto() string
+type Entidad interface {
+	GetID() uint
+	String() string
 }
